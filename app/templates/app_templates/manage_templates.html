@@ -42,6 +42,9 @@
         <div class="stretched divided very relaxed row">
             <div class="four wide column">
                 {{ navigation(endpoints) }}
+                <!-- HERE!!!! -->
+                <a href="{{ url_for('templates.update', template_id=template.id) }}">Update Template</a>
+                <!-- HERE!!!! -->
             </div>
             <div class="ten wide column"> {# Show deletion tab if it's clicked on #}
                 {% if request.endpoint == deletion_endpoint %}
@@ -71,15 +74,30 @@
                 {% elif form %} {# Not currently used #}
                     {{ f.render_form(form) }}
                 {% elif apps %} {# Show application list #}
-                    <div class=" ui horizontal section divider "> Apps </div>    
+                    <div class=" ui horizontal section divider "> Apps </div>
                         <div class="ui three column middle aligned centered grid">
-                            {%- for n, l in apps %}
-                            <div class="column">
-                                <div class="ui circular mini center compact aligned  black segment">
-                                    <img class="ui mini centered avatar image" src={{ l|tojson }}" style="height:50px;width:50px;>
-                                    <h5 class="ui header"> {{ n }} </h5>
+                            <div class="ui three stackable raised blue link cards">
+                            {%- for app in apps %}
+                            {# <div class="column"> #}
+                                <div class="card" onclick="window.location.href = '{{ url_for('templates.template_content_app', app_id=app.id, template_id=template.id) }}';">
+                                    <div class="ui centered image">
+                                    <img src={{ app.logo|tojson }} style="width:200px;height:200px;object-fit:contain;object-position:center;">
+                                    </div>
+                                    <div class="content">
+                                    <div class="header">{{ app.title }}</div>
+                                    <div class="meta">
+                                        {% for c in app.categories %}
+                                        <a> {{ c }} </a>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="description">
+                                        {% if app.description %}
+                                            {{ app.description| truncate(160, False) }}
+                                        {% endif %}
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
+                            {# </div> #}
                             {%- endfor %}
                         </div>
                     </div>
