@@ -24,6 +24,8 @@
     <table class="ui compact very basic table">
         <tr><td>Template Name</td><td>{{ template.name }}</td></tr>
         <tr><td>Template URL</td><td>{{ template.url }}</td></tr>
+        <tr><td>Template Updated</td><td>{{ moment(template.updated_at).fromNow() }}</td></tr>
+        <tr><td>Template Created</td><td>{{ moment(template.created_at).fromNow() }}</td></tr>
     </table>
 {% endmacro %}
 
@@ -42,9 +44,6 @@
         <div class="stretched divided very relaxed row">
             <div class="four wide column">
                 {{ navigation(endpoints) }}
-                <!-- HERE!!!! -->
-                <a href="{{ url_for('templates.update', template_id=template.id) }}">Update Template</a>
-                <!-- HERE!!!! -->
             </div>
             <div class="ten wide column"> {# Show deletion tab if it's clicked on #}
                 {% if request.endpoint == deletion_endpoint %}
